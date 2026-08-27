@@ -1,6 +1,0 @@
-# Allow every crawler to index the whole site.
-User-agent: *
-Allow: /
-
-# Replace the placeholder below with your real address once published.
-Sitemap: https://REPLACE-WITH-YOUR-URL/sitemap.xml
