@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  Michal Szaroma :: portfolio
+  ============================================================================
+  Structure of this file:
+    1. Head: fonts, Tailwind CDN, Tailwind config, external stylesheet
+    2. Background field (the ambient grid and light pools)
+    3. Skip link (accessibility)
+    4. Header / navigation
+    5. Hero
+    6. About and skills
+    7. Architecture labs (projects)
+    8. Background (career timeline)
+    9. Off the clock (hobbies)
+    10. Contact
+    11. Footer
+    12. Script tag
+
+  Folder layout:
+    index.html            this page
+    404.html              styled not-found page for GitHub Pages
+    robots.txt            crawler rules
+    sitemap.xml           list of pages for search engines
+    README.md             repository front page
+    assets/
+      css/styles.css      custom styling
+      js/script.js        navigation, scroll reveal, form handling
+      img/                portrait, icons, social preview card
+
+  All paths are relative, so the site works whether it is served from a
+  domain root or from a /repository-name/ subfolder on GitHub Pages.
+  ============================================================================
+-->
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Tells mobile browsers to use the real device width instead of pretending
+       to be a 980px desktop. Without this the whole layout renders zoomed out. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Michal Szaroma :: Computing Student, Networks and Security</title>
+  <meta name="description" content="Portfolio of Michal Szaroma, BSc Computing student at National College of Ireland, moving from six years of logistics operations into cybersecurity, cloud infrastructure and systems networking." />
+
+  <!-- Colours the browser chrome on mobile to match the page background. -->
+  <meta name="theme-color" content="#020617" />
+
+  <!-- Icons. The SVG is used by modern browsers and stays sharp at any size;
+       the PNGs cover older browsers and the iOS home screen. -->
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+  <!-- Open Graph and Twitter tags: control the preview card when the link is
+       shared on LinkedIn, WhatsApp, Slack and so on. Without og:image the
+       preview renders as a bare grey box, which looks broken.
+
+       IMPORTANT: og:image and og:url must be ABSOLUTE urls. Replace the
+       placeholder below with the real address once the site is published,
+       for example https://michalszaroma-ui.github.io/portfolio/ -->
+  <meta property="og:title" content="Michal Szaroma :: Computing Student, Networks and Security" />
+  <meta property="og:description" content="Six years routing physical freight. Now routing packets. Projects, background and contact." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://REPLACE-WITH-YOUR-URL/" />
+  <meta property="og:image" content="https://REPLACE-WITH-YOUR-URL/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://REPLACE-WITH-YOUR-URL/" />
+
+  <!-- preconnect opens the connection to the font servers early, which shaves
+       a few hundred milliseconds off first paint. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Three typefaces, each with a job:
+         Space Grotesk : headings and numbers (the display face)
+         Inter         : body copy
+         JetBrains Mono: labels, dates, tags (the utility face)
+       display=swap shows fallback text immediately rather than leaving the
+       page blank while fonts download. -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN. No build step, no npm: the file opens straight
+       from disk. The trade off is a small runtime cost and a console notice
+       saying the CDN is not for production. Fine for a portfolio. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind configuration. This must sit AFTER the CDN script and BEFORE
+       any markup that uses the custom names below. It registers the colour
+       palette and font families so classes like text-cyan and font-display
+       work throughout the page. -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void:  '#020617', // page background, deep slate
+            deep:  '#050b1d', // slightly lifted background
+            panel: '#0a1428', // panel fill
+            edge:  '#16233f', // borders
+            beam:  '#3b82f6', // electric blue, primary accent
+            cyan:  '#06b6d4', // cyber cyan, secondary accent
+            mute:  '#8aa0c4', // secondary text
+          },
+          fontFamily: {
+            display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+            mono:    ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+          maxWidth: {
+            shell: '1180px', // one content width, used by every section
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom styles. Loaded last so it can override Tailwind where needed. -->
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body class="font-body antialiased selection:bg-cyan/30 selection:text-white">
+
+<!-- ==========================================================================
+     BACKGROUND FIELD
+     Purely decorative, so aria-hidden keeps it out of screen readers.
+     Styling lives in styles.css section 3.
+     ========================================================================== -->
+<div class="field" aria-hidden="true">
+  <div class="pool pool-a"></div>
+  <div class="pool pool-b"></div>
+</div>
+
+<!-- ==========================================================================
+     SKIP LINK
+     Invisible until focused. Lets keyboard users jump straight to the content
+     instead of tabbing through the whole navigation on every page load.
+     ========================================================================== -->
+<a href="#hero" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-beam focus:text-void focus:px-4 focus:py-2 focus:rounded-lg focus:font-medium">Skip to content</a>
+
+<!-- ==========================================================================
+     HEADER AND NAVIGATION
+     Fixed to the top of the viewport, floating on a glass panel.
+     ========================================================================== -->
+<header class="fixed top-0 inset-x-0 z-50">
+  <div class="mx-auto max-w-shell px-5 sm:px-8 pt-4">
+
+    <nav class="glass flex items-center justify-between px-4 sm:px-6 py-3" aria-label="Primary">
+
+      <!-- Logo mark and name. Doubles as a link back to the top. -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <span class="relative grid place-items-center h-9 w-9 rounded-lg bg-gradient-to-br from-beam to-cyan text-void font-display font-bold text-sm">
+          MS
+          <!-- A blurred copy of the badge sitting behind it, revealed on hover
+               to produce the glow. -z-10 pushes it under the initials. -->
+          <span class="absolute inset-0 rounded-lg bg-cyan/40 blur-md -z-10 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+        </span>
+        <!-- Hidden on the narrowest screens to leave room for the buttons. -->
+        <span class="hidden sm:block leading-tight">
+          <span class="block font-display font-semibold tracking-tight text-[.95rem]">Michal Szaroma</span>
+          <span class="block font-mono text-[.62rem] tracking-[.18em] uppercase text-mute">Networks and Security</span>
+        </span>
+      </a>
+
+      <!-- Desktop navigation. Hidden below the md breakpoint, where the
+           hamburger menu takes over. -->
+      <div class="hidden md:flex items-center gap-8 font-mono text-[.78rem] text-mute">
+        <a href="#about" class="nav-link hover:text-white transition-colors">/about</a>
+        <a href="#labs" class="nav-link hover:text-white transition-colors">/architecture-labs</a>
+        <a href="#background" class="nav-link hover:text-white transition-colors">/background</a>
+      </div>
+
+      <div class="flex items-center gap-2">
+
+        <!-- Primary call to action in the header. -->
+        <a href="#contact" class="btn-solid hidden sm:inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm">
+          <!-- Terminal icon. Inline SVG rather than an icon font: no extra
+               request, and it inherits the text colour automatically. -->
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m6 9 3 3-3 3" />
+            <path d="M13 15h5" />
+          </svg>
+          Access Terminal
+        </a>
+
+        <!-- Mobile menu button. aria-expanded is kept in sync by script.js so
+             screen readers announce whether the menu is open. -->
+        <button id="navToggle" type="button"
+                class="md:hidden grid place-items-center h-9 w-9 rounded-lg border border-beam/30 text-mute hover:text-white transition-colors"
+                aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile menu panel. Starts hidden; script.js toggles the class. -->
+    <div id="mobileNav" class="glass md:hidden mt-2 px-5 py-4 hidden">
+      <div class="flex flex-col gap-4 font-mono text-sm text-mute">
+        <a href="#about" class="hover:text-white transition-colors">/about</a>
+        <a href="#labs" class="hover:text-white transition-colors">/architecture-labs</a>
+        <a href="#background" class="hover:text-white transition-colors">/background</a>
+        <a href="#contact" class="text-cyan">/access-terminal</a>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<!-- z-10 lifts all real content above the background field at z-0. -->
+<main class="relative z-10">
+
+  <!-- ========================================================================
+       HERO
+       Two columns on large screens: pitch on the left, node graphic on the
+       right. Stacks to one column on tablet and phone.
+       ======================================================================== -->
+  <section id="hero" class="mx-auto max-w-shell px-5 sm:px-8 pt-32 sm:pt-40 pb-20 sm:pb-28">
+    <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-14 lg:gap-10 items-center">
+
+      <!-- Left column: availability, headline, pitch, actions, stats. -->
+      <div class="reveal">
+
+        <!-- Availability marker. The animated ping is a second, expanding copy
+             of the dot sitting underneath the solid one. -->
+        <div class="flex items-center gap-3 mb-7">
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75 animate-ping"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-cyan"></span>
+          </span>
+          <span class="eyebrow">Dublin, Ireland. Open to placements</span>
+        </div>
+
+        <!-- The headline. Negative letter spacing tightens large type, which
+             otherwise looks loose at this size. -->
+        <h1 class="font-display font-bold tracking-[-.03em] leading-[1.02] text-[2.6rem] sm:text-6xl lg:text-[4.15rem]">
+          <span class="grad-text">Optimizing logic.</span><br />
+          <span class="text-white">Hardening networks.</span>
+        </h1>
+
+        <p class="mt-7 text-[1.02rem] sm:text-lg leading-relaxed text-slate-300/90 max-w-xl">
+          I spent six years making sure physical freight left a manufacturing plant in the right order, on the right route, with the right paperwork. I am now a first year Computing student at National College of Ireland, applying the same thinking to packets instead of pallets, and building toward cybersecurity, cloud infrastructure and systems networking.
+        </p>
+
+        <!-- Two calls to action: one to the work, one to the contact form. -->
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#labs" class="btn-solid inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[.95rem]">
+            Review labs
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
+          </a>
+          <a href="#contact" class="btn-ghost inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[.95rem]">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            Secure connection
+          </a>
+        </div>
+
+        <!-- Three headline numbers. A definition list is the correct element
+             here: each is a label paired with a value. -->
+        <dl class="mt-12 grid grid-cols-3 gap-4 max-w-lg">
+          <div class="glass px-4 py-3.5">
+            <dt class="font-mono text-[.62rem] uppercase tracking-[.14em] text-mute">Operations</dt>
+            <dd class="font-display text-2xl font-semibold text-white mt-1">6<span class="text-cyan">+</span> yrs</dd>
+          </div>
+          <div class="glass px-4 py-3.5">
+            <dt class="font-mono text-[.62rem] uppercase tracking-[.14em] text-mute">Live builds</dt>
+            <dd class="font-display text-2xl font-semibold text-white mt-1">2</dd>
+          </div>
+          <div class="glass px-4 py-3.5">
+            <dt class="font-mono text-[.62rem] uppercase tracking-[.14em] text-mute">Degree</dt>
+            <dd class="font-display text-2xl font-semibold text-white mt-1">Yr 1</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- ====================================================================
+           Right column: the signature graphic.
+           Three rotating rings, a five point node lattice, and the profile
+           photo at the core, loaded from assets/img/profile.jpg.
+           aria-hidden because it carries no information a screen reader needs.
+           ==================================================================== -->
+      <div class="reveal relative mx-auto w-full max-w-[26rem] aspect-square" aria-hidden="true">
+
+        <!-- Soft blue halo behind the whole graphic. -->
+        <div class="absolute inset-0 rounded-full bg-beam/10 blur-[70px]"></div>
+
+        <svg viewBox="0 0 400 400" class="relative w-full h-full">
+          <defs>
+            <!-- Gradients fade each ring out as it curves away, so the rings
+                 read as three dimensional rather than flat circles. -->
+            <linearGradient id="gRing" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"   stop-color="#3b82f6" stop-opacity=".9" />
+              <stop offset="100%" stop-color="#06b6d4" stop-opacity=".15" />
+            </linearGradient>
+            <linearGradient id="gRing2" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#06b6d4" stop-opacity=".85" />
+              <stop offset="100%" stop-color="#3b82f6" stop-opacity=".1" />
+            </linearGradient>
+            <!-- Circular mask for the photo. -->
+            <clipPath id="coreClip"><circle cx="200" cy="200" r="62" /></clipPath>
+          </defs>
+
+          <!-- Outer ring: dashed, slowest, with one travelling node. -->
+          <g class="ring spin-slow" style="transform-origin:200px 200px">
+            <circle cx="200" cy="200" r="178" fill="none" stroke="url(#gRing)" stroke-width="1" stroke-dasharray="3 9" />
+            <circle cx="378" cy="200" r="4" fill="#06b6d4" />
+          </g>
+
+          <!-- Middle ring: solid, counter rotating. -->
+          <g class="ring spin-reverse" style="transform-origin:200px 200px">
+            <circle cx="200" cy="200" r="142" fill="none" stroke="url(#gRing2)" stroke-width="1.2" />
+            <circle cx="58"  cy="200" r="5" fill="#3b82f6" />
+            <circle cx="200" cy="58"  r="3" fill="#7cc4fb" />
+          </g>
+
+          <!-- Inner ring: long dashes, fastest. -->
+          <g class="ring spin-fast" style="transform-origin:200px 200px">
+            <circle cx="200" cy="200" r="106" fill="none" stroke="rgba(59,130,246,.35)" stroke-width="1" stroke-dasharray="26 14" />
+            <circle cx="306" cy="200" r="3.5" fill="#22d3ee" />
+          </g>
+
+          <!-- Static node lattice: a pentagon of linked points. -->
+          <g stroke="rgba(59,130,246,.28)" stroke-width="1">
+            <path d="M200 94 L288 152 L262 262 L138 262 L112 152 Z" fill="none" />
+          </g>
+          <!-- Each node pulses on a half second stagger so the lattice looks
+               like traffic moving rather than a single blinking light. -->
+          <g fill="#3b82f6">
+            <circle class="pulse-node" cx="200" cy="94"  r="3" style="animation-delay:0s" />
+            <circle class="pulse-node" cx="288" cy="152" r="3" style="animation-delay:.5s" />
+            <circle class="pulse-node" cx="262" cy="262" r="3" style="animation-delay:1s" />
+            <circle class="pulse-node" cx="138" cy="262" r="3" style="animation-delay:1.5s" />
+            <circle class="pulse-node" cx="112" cy="152" r="3" style="animation-delay:2s" />
+          </g>
+
+          <!-- The core: a dark disc, the photo, and a thick dark ring drawn
+               over the photo edge to soften the join.
+
+               The photo lives at assets/img/profile.jpg. The background was
+               desaturated in Google Photos, then tinted blue here so it sits
+               inside the page palette. Three alternates are in the same folder:
+                 profile-alt-mono.jpg   the untinted greyscale version
+                 profile-alt-light.jpg  lighter blue background
+                 profile-alt-deep.jpg   deeper, higher contrast blue
+               To use one, rename it over profile.jpg. No code change needed.
+
+               preserveAspectRatio="xMidYMid slice" fills the circle from the
+               centre and crops the overflow, so a slightly off square image
+               still looks right. -->
+          <circle cx="200" cy="200" r="66" fill="#020617" stroke="rgba(6,182,212,.5)" stroke-width="1.5" />
+          <image href="assets/img/profile.jpg" x="138" y="138" width="124" height="124" clip-path="url(#coreClip)" preserveAspectRatio="xMidYMid slice" />
+          <circle cx="200" cy="200" r="62" fill="none" stroke="rgba(2,6,23,.35)" stroke-width="10" />
+        </svg>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section divider. -->
+  <div class="mx-auto max-w-shell px-5 sm:px-8"><div class="rule"></div></div>
+
+  <!-- ========================================================================
+       ABOUT AND SKILLS
+       Narrative on top, then two skill panels side by side.
+       scroll-mt-28 stops the fixed header covering the heading when the
+       in page link jumps here.
+       ======================================================================== -->
+  <section id="about" class="mx-auto max-w-shell px-5 sm:px-8 py-20 sm:py-28 scroll-mt-28">
+
+    <div class="reveal max-w-3xl">
+      <p class="eyebrow">/about</p>
+      <h2 class="mt-4 font-display font-bold tracking-tight text-3xl sm:text-[2.6rem] leading-[1.1] text-white">
+        A route is a route, whether it carries a pallet or a packet.
+      </h2>
+      <p class="mt-6 text-slate-300/90 leading-relaxed text-[1.02rem]">
+        At Saica Pack I plan delivery routes across Ireland, Northern Ireland and the UK. That means choosing paths under changing conditions, keeping records accurate across systems, and spotting the one bad address before it costs a day. Network engineering asks the same questions in a different vocabulary: what path does this take, what happens when it fails, and who is allowed to touch it.
+      </p>
+      <p class="mt-4 text-slate-300/90 leading-relaxed text-[1.02rem]">
+        That is what I am studying for now. I hold a 2004 IT Technician diploma from Krakow, I use ERP and warehouse systems daily, and I am currently working toward CompTIA Security+ alongside the degree.
+      </p>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-2 gap-5">
+
+      <!-- Panel one: languages and tools. -->
+      <div class="glass glass-hover reveal p-7 sm:p-8">
+        <div class="flex items-center gap-3">
+          <span class="grid place-items-center h-10 w-10 rounded-lg bg-beam/12 border border-beam/25 text-beam">
+            <!-- Code brackets icon. -->
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m8 8-4 4 4 4" /><path d="m16 8 4 4-4 4" /><path d="m13 5-2 14" />
+            </svg>
+          </span>
+          <h3 class="font-display text-lg font-semibold text-white">Tech stack</h3>
+        </div>
+
+        <p class="mt-4 text-sm text-mute leading-relaxed">What I write in, and where each one sits in my coursework.</p>
+
+        <!-- Each row is the language on the left, its context on the right.
+             items-baseline aligns the two type sizes on their baselines. -->
+        <ul class="mt-6 space-y-4">
+          <li>
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="font-medium text-slate-100">HTML</span>
+              <span class="font-mono text-[.7rem] text-mute">semantic, accessible markup</span>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="font-medium text-slate-100">CSS</span>
+              <span class="font-mono text-[.7rem] text-mute">responsive grid and flex layouts</span>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="font-medium text-slate-100">JavaScript</span>
+              <span class="font-mono text-[.7rem] text-mute">interactive calculators, DOM logic</span>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="font-medium text-slate-100">Python</span>
+              <span class="font-mono text-[.7rem] text-mute">scripting and problem sets</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="mt-7 flex flex-wrap gap-2">
+          <span class="tag">Java</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+
+      <!-- Panel two: operational practices. -->
+      <div class="glass glass-hover reveal p-7 sm:p-8">
+        <div class="flex items-center gap-3">
+          <span class="grid place-items-center h-10 w-10 rounded-lg bg-cyan/12 border border-cyan/25 text-cyan">
+            <!-- Server rack icon. -->
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="6" rx="2" />
+              <rect x="2" y="15" width="20" height="6" rx="2" />
+              <path d="M6 6h.01M6 18h.01" />
+            </svg>
+          </span>
+          <h3 class="font-display text-lg font-semibold text-white">Infrastructure and systems operations</h3>
+        </div>
+
+        <p class="mt-4 text-sm text-mute leading-relaxed">Practices I apply to my own builds, carried over from running live operations.</p>
+
+        <!-- Custom bullets: the default list marker cannot be coloured
+             independently of the text, so each row uses a small span instead. -->
+        <ul class="mt-6 space-y-4 text-sm">
+          <li class="flex gap-3">
+            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan"></span>
+            <span><span class="font-medium text-slate-100">CI/CD pipelines.</span><span class="text-mute"> Deploying through GitHub Pages and Netlify on every push.</span></span>
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan"></span>
+            <span><span class="font-medium text-slate-100">Data integrity.</span><span class="text-mute"> Six years keeping ERP stock, invoice and customs records reconciled.</span></span>
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan"></span>
+            <span><span class="font-medium text-slate-100">Input sanitization.</span><span class="text-mute"> Validating and escaping anything a user can type.</span></span>
+          </li>
+          <li class="flex gap-3">
+            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan"></span>
+            <span><span class="font-medium text-slate-100">Git workflows.</span><span class="text-mute"> Branching, meaningful commits, version controlled coursework.</span></span>
+          </li>
+        </ul>
+
+        <div class="mt-7 flex flex-wrap gap-2">
+          <span class="tag">CompTIA Security+ (in progress)</span>
+          <span class="tag">Windows OS</span>
+          <span class="tag">Networking</span>
+          <span class="tag">ERP (EFI)</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-shell px-5 sm:px-8"><div class="rule"></div></div>
+
+  <!-- ========================================================================
+       ARCHITECTURE LABS
+       Two project cards. Each has an abstract SVG header instead of a
+       screenshot, so nothing goes stale when the live sites change.
+       ======================================================================== -->
+  <section id="labs" class="mx-auto max-w-shell px-5 sm:px-8 py-20 sm:py-28 scroll-mt-28">
+
+    <div class="reveal flex flex-wrap items-end justify-between gap-6">
+      <div class="max-w-2xl">
+        <p class="eyebrow">/architecture-labs</p>
+        <h2 class="mt-4 font-display font-bold tracking-tight text-3xl sm:text-[2.6rem] leading-[1.1] text-white">Things I built and shipped.</h2>
+        <p class="mt-5 text-slate-300/90 leading-relaxed">Both are live. Open them, break them, view the source.</p>
+      </div>
+
+      <!-- External links always carry target and rel together. noopener stops
+           the new tab getting a reference back to this page, which is a
+           genuine security issue, not just tidiness. -->
+      <a href="https://github.com/michalszaroma-ui" target="_blank" rel="noopener noreferrer" class="btn-ghost inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2.2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.06-.72.08-.7.08-.7 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.28.74-1.57-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z" /></svg>
+        All repositories
+      </a>
+    </div>
+
+    <div class="mt-12 grid lg:grid-cols-2 gap-5">
+
+      <!-- ------------------------------------------------------------------
+           PROJECT 1 :: Sustainable Transport Dublin
+           Header art: a rising line chart, referencing the CO2 calculator.
+           flex-col plus flex-1 on the body makes both cards match in height
+           no matter how the descriptions wrap.
+           ------------------------------------------------------------------ -->
+      <article class="glass glass-hover reveal overflow-hidden flex flex-col">
+
+        <div class="relative h-44 sm:h-52 overflow-hidden border-b border-beam/15 bg-gradient-to-br from-[#07142c] to-[#020617]">
+          <svg viewBox="0 0 480 200" class="absolute inset-0 w-full h-full" aria-hidden="true">
+            <defs>
+              <!-- Brightest in the middle so the line appears to emerge from
+                   and dissolve into the background. -->
+              <linearGradient id="wave1" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%"   stop-color="#3b82f6" stop-opacity=".1" />
+                <stop offset="55%"  stop-color="#06b6d4" stop-opacity=".55" />
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity=".1" />
+              </linearGradient>
+            </defs>
+
+            <!-- Chart gridlines. -->
+            <g stroke="rgba(59,130,246,.14)" stroke-width="1">
+              <path d="M0 40h480M0 80h480M0 120h480M0 160h480" />
+              <path d="M80 0v200M160 0v200M240 0v200M320 0v200M400 0v200" />
+            </g>
+
+            <!-- The data line. C and S draw smooth bezier curves. -->
+            <path d="M0 150 C 80 150, 100 96, 160 92 S 250 120, 320 74 S 420 46, 480 34"
+                  fill="none" stroke="url(#wave1)" stroke-width="2.5" stroke-linecap="round" />
+
+            <!-- Data points on the line. -->
+            <g fill="#06b6d4">
+              <circle cx="160" cy="92" r="3.5" />
+              <circle cx="320" cy="74" r="3.5" />
+              <circle cx="480" cy="34" r="3.5" />
+            </g>
+
+            <text x="24" y="34" fill="#5d87c9" font-family="JetBrains Mono, monospace" font-size="12">CO2 saved / mode</text>
+          </svg>
+        </div>
+
+        <div class="p-7 flex flex-col flex-1">
+          <div class="flex items-center gap-3">
+            <span class="tag">Academic capstone</span>
+            <span class="tag">Group project</span>
+          </div>
+
+          <h3 class="mt-4 font-display text-xl font-semibold text-white">Sustainable Transport Dublin</h3>
+
+          <!-- flex-1 pushes the buttons to the bottom of the card. -->
+          <p class="mt-3 text-sm leading-relaxed text-slate-300/85 flex-1">
+            A group web application tracking lower carbon transit vectors across Dublin, built around UN Sustainable Development Goals 11 and 13. Multi page and responsive, with an interactive JavaScript CO2 savings calculator, a sourced data table, and semantic markup throughout. Deployed on GitHub Pages, version controlled with Git.
+          </p>
+
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">GitHub Pages</span>
+          </div>
+
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="https://michalszaroma-ui.github.io/sustainable-transport-dublin/" target="_blank" rel="noopener noreferrer" class="btn-solid inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm">
+              Open live site
+              <!-- Arrow leaving a box: the conventional external link icon. -->
+              <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7" /><path d="M7 7h10v10" />
+              </svg>
+            </a>
+            <a href="https://github.com/michalszaroma-ui" target="_blank" rel="noopener noreferrer" class="btn-ghost inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm">Source code</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- ------------------------------------------------------------------
+           PROJECT 2 :: Polskie Dancingi w Irlandii
+           Header art: three abstract event cards, referencing the listings
+           layout on the live site.
+           ------------------------------------------------------------------ -->
+      <article class="glass glass-hover reveal overflow-hidden flex flex-col">
+
+        <div class="relative h-44 sm:h-52 overflow-hidden border-b border-beam/15 bg-gradient-to-br from-[#0a1030] to-[#020617]">
+          <svg viewBox="0 0 480 200" class="absolute inset-0 w-full h-full" aria-hidden="true">
+            <defs>
+              <!-- Radial glow behind the cards to lift the centre. -->
+              <radialGradient id="glowB" cx="50%" cy="50%">
+                <stop offset="0%"   stop-color="#06b6d4" stop-opacity=".45" />
+                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+
+            <circle cx="240" cy="100" r="96" fill="url(#glowB)" />
+
+            <!-- Three card outlines. -->
+            <g fill="none" stroke="rgba(59,130,246,.3)" stroke-width="1">
+              <rect x="60"  y="52" width="120" height="96" rx="8" />
+              <rect x="196" y="52" width="120" height="96" rx="8" />
+              <rect x="332" y="52" width="88"  height="96" rx="8" />
+            </g>
+
+            <!-- Abstract text lines inside each card. -->
+            <g fill="rgba(124,196,251,.55)">
+              <rect x="76"  y="68" width="60" height="6" rx="3" />
+              <rect x="76"  y="84" width="88" height="4" rx="2" />
+              <rect x="76"  y="96" width="72" height="4" rx="2" />
+              <rect x="212" y="68" width="60" height="6" rx="3" />
+              <rect x="212" y="84" width="88" height="4" rx="2" />
+              <rect x="212" y="96" width="72" height="4" rx="2" />
+              <rect x="348" y="68" width="52" height="6" rx="3" />
+              <rect x="348" y="84" width="60" height="4" rx="2" />
+            </g>
+
+            <!-- Two abstract buttons. -->
+            <g fill="#06b6d4">
+              <rect x="76"  y="118" width="46" height="14" rx="7" />
+              <rect x="212" y="118" width="46" height="14" rx="7" />
+            </g>
+          </svg>
+        </div>
+
+        <div class="p-7 flex flex-col flex-1">
+          <div class="flex items-center gap-3">
+            <span class="tag">Live client site</span>
+            <span class="tag">Real users</span>
+          </div>
+
+          <h3 class="mt-4 font-display text-xl font-semibold text-white">Polskie Dancingi w Irlandii</h3>
+
+          <p class="mt-3 text-sm leading-relaxed text-slate-300/85 flex-1">
+            A bilingual site for a Polish dance night promoter in County Dublin, built end to end and deployed on Netlify. English and Polish content switching, a video background hero, a live countdown to the next event, a nine clip video gallery, and a review form with a hidden honeypot field to catch bots. Full Open Graph and Twitter card metadata, verified in Google Search Console, and ranking on the first page of Google within days of launch.
+          </p>
+
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Netlify</span><span class="tag">SEO</span>
+          </div>
+
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="https://polskidancing.netlify.app/" target="_blank" rel="noopener noreferrer" class="btn-solid inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm">
+              Open live site
+              <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7" /><path d="M7 7h10v10" />
+              </svg>
+            </a>
+            <!-- Points at the video gallery section of the live site. If the
+                 bilety.html page is still published, swap this href back to
+                 https://polskidancing.netlify.app/bilety.html -->
+            <a href="https://polskidancing.netlify.app/#gallery" target="_blank" rel="noopener noreferrer" class="btn-ghost inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm">Video gallery</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-shell px-5 sm:px-8"><div class="rule"></div></div>
+
+  <!-- ========================================================================
+       BACKGROUND :: CAREER TIMELINE
+       An ordered list, newest first, with a glowing line and a travelling
+       dot down the left edge.
+       ======================================================================== -->
+  <section id="background" class="mx-auto max-w-shell px-5 sm:px-8 py-20 sm:py-28 scroll-mt-28">
+
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow">/background</p>
+      <h2 class="mt-4 font-display font-bold tracking-tight text-3xl sm:text-[2.6rem] leading-[1.1] text-white">From dispatch floor to computer science.</h2>
+      <p class="mt-5 text-slate-300/90 leading-relaxed">Read it bottom to top: retail, then warehouse, then running a dispatch operation, and now a degree. Every step added systems I had to keep running.</p>
+    </div>
+
+    <!-- pl-8 leaves room for the spine and node dots, which are positioned
+         with negative offsets from each list item. -->
+    <div id="timeline" class="relative mt-14 pl-8 sm:pl-12">
+
+      <!-- The vertical line. -->
+      <div class="spine absolute left-[7px] sm:left-[11px] top-2 bottom-2 w-px"></div>
+
+      <!-- The travelling dot. Its distance is set by script.js. -->
+      <div class="packet absolute left-[4px] sm:left-[8px] top-2 h-2 w-2 rounded-full bg-cyan shadow-[0_0_12px_3px_rgba(6,182,212,.6)]" aria-hidden="true"></div>
+
+      <ol class="space-y-5">
+
+        <!-- Current: the degree. -->
+        <li class="reveal relative">
+          <span class="absolute -left-8 sm:-left-12 top-6 h-3 w-3 rounded-full bg-cyan ring-4 ring-cyan/15" aria-hidden="true"></span>
+          <div class="glass glass-hover p-6 sm:p-7">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="font-display text-lg font-semibold text-white">BSc (Hons) Computing</h3>
+              <span class="font-mono text-xs text-cyan">2025 to present</span>
+            </div>
+            <p class="mt-1 text-sm text-mute">National College of Ireland, Dublin. QQI Level 8, four years part time</p>
+            <p class="mt-4 text-sm leading-relaxed text-slate-300/85">
+              Studied two evenings a week plus Saturdays, alongside full time work. Year one covers operating systems, computer architecture, programming concepts, databases and data modelling, web design, and an introduction to data science and AI.
+            </p>
+            <p class="mt-3 text-sm leading-relaxed text-slate-300/85">
+              Later years add advanced computer networks, security fundamentals, and a work placement in year three. I am taking the technical elective route toward the year four Cybersecurity specialisation: secure application programming, penetration testing, digital forensics, DevOpsSec, and governance, ethics and security. Studying for CompTIA Security+ in parallel.
+            </p>
+          </div>
+        </li>
+
+        <!-- Current: the day job. -->
+        <li class="reveal relative">
+          <span class="absolute -left-8 sm:-left-12 top-6 h-3 w-3 rounded-full bg-beam ring-4 ring-beam/15" aria-hidden="true"></span>
+          <div class="glass glass-hover p-6 sm:p-7">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="font-display text-lg font-semibold text-white">Dispatch Manager / Logistics Supervisor</h3>
+              <span class="font-mono text-xs text-cyan">Nov 2019 to present</span>
+            </div>
+            <p class="mt-1 text-sm text-mute">Saica Pack, Dublin</p>
+            <ul class="mt-4 space-y-2.5 text-sm text-slate-300/85">
+              <li class="flex gap-3"><span class="mt-[.45rem] h-1 w-1 shrink-0 rounded-full bg-beam"></span>ERP records, commercial invoices, shipping and customs paperwork for Irish, Northern Irish and UK markets</li>
+              <li class="flex gap-3"><span class="mt-[.45rem] h-1 w-1 shrink-0 rounded-full bg-beam"></span>Daily route planning and coordination with external couriers</li>
+              <li class="flex gap-3"><span class="mt-[.45rem] h-1 w-1 shrink-0 rounded-full bg-beam"></span>Supervising and training a small team of drivers and warehouse operatives</li>
+              <li class="flex gap-3"><span class="mt-[.45rem] h-1 w-1 shrink-0 rounded-full bg-beam"></span>Finding workflow bottlenecks and rebuilding the process around them</li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Past roles: dimmer dots to show they are further back. -->
+        <li class="reveal relative">
+          <span class="absolute -left-8 sm:-left-12 top-6 h-3 w-3 rounded-full bg-beam/70 ring-4 ring-beam/10" aria-hidden="true"></span>
+          <div class="glass glass-hover p-6 sm:p-7">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="font-display text-lg font-semibold text-white">Warehouse Supervisor</h3>
+              <span class="font-mono text-xs text-cyan">Aug 2016 to Jul 2018</span>
+            </div>
+            <p class="mt-1 text-sm text-mute">Flair Showers, Dublin</p>
+            <p class="mt-4 text-sm leading-relaxed text-slate-300/85">
+              Goods intake, order picking, stock management and dispatch to Irish, Northern Irish and Italian markets. Kept inventory accurate in the warehouse management system, coordinated agency staff, and held health and safety compliance across a high volume operation.
+            </p>
+          </div>
+        </li>
+
+        <li class="reveal relative">
+          <span class="absolute -left-8 sm:-left-12 top-6 h-3 w-3 rounded-full bg-beam/50 ring-4 ring-beam/10" aria-hidden="true"></span>
+          <div class="glass glass-hover p-6 sm:p-7">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="font-display text-lg font-semibold text-white">Web Sales Assistant</h3>
+              <span class="font-mono text-xs text-cyan">Nov 2014 to Jan 2015</span>
+            </div>
+            <p class="mt-1 text-sm text-mute">Currys PC World, Dublin</p>
+            <p class="mt-4 text-sm leading-relaxed text-slate-300/85">
+              Processed online orders, maintained e-commerce inventory records and handled customer queries.
+            </p>
+          </div>
+        </li>
+
+        <!-- Oldest entry: grey dot, the origin point of the whole story. -->
+        <li class="reveal relative">
+          <span class="absolute -left-8 sm:-left-12 top-6 h-3 w-3 rounded-full bg-mute/50 ring-4 ring-white/5" aria-hidden="true"></span>
+          <div class="glass glass-hover p-6 sm:p-7">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="font-display text-lg font-semibold text-white">IT Technician Diploma</h3>
+              <span class="font-mono text-xs text-cyan">2004</span>
+            </div>
+            <p class="mt-1 text-sm text-mute">Post Secondary Vocational School, Krakow, Poland</p>
+            <p class="mt-4 text-sm leading-relaxed text-slate-300/85">
+              Hardware troubleshooting, basic networking and system maintenance. The first version of the work I am returning to now.
+            </p>
+          </div>
+        </li>
+
+      </ol>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-shell px-5 sm:px-8"><div class="rule"></div></div>
+
+  <!-- ========================================================================
+       OFF THE CLOCK
+       Two cards, each tying a hobby to a working habit. Kept deliberately
+       short: two true things read better than four padded ones.
+
+       To add photos later, uncomment the strip below the cards and drop
+       three optimised images into an images/ folder next to this file.
+       ======================================================================== -->
+  <section id="telemetry" class="mx-auto max-w-shell px-5 sm:px-8 py-20 sm:py-28">
+
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow">/off-the-clock</p>
+      <h2 class="mt-4 font-display font-bold tracking-tight text-3xl sm:text-[2.6rem] leading-[1.1] text-white">Off the clock.</h2>
+      <p class="mt-5 text-slate-300/90 leading-relaxed">Two things I do outside work and study, and the habit each one keeps sharp.</p>
+    </div>
+
+    <!-- max-w-3xl stops two cards stretching awkwardly wide on a large screen. -->
+    <div class="mt-12 grid sm:grid-cols-2 gap-5 max-w-3xl">
+
+      <!-- A figure with a figcaption is the right element pairing here: an
+           icon or image with associated explanatory text. -->
+      <figure class="glass glass-hover reveal p-7 flex flex-col">
+        <span class="grid place-items-center h-11 w-11 rounded-xl bg-beam/12 border border-beam/25 text-beam">
+          <!-- Globe icon. -->
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18" />
+            <path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z" />
+          </svg>
+        </span>
+        <figcaption class="mt-5 flex-1">
+          <h3 class="font-display font-semibold text-white">Travel</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mute">A new city forces you to read an unfamiliar system quickly: signage, transit, currency, local rules. It is the same reflex as landing in a codebase or a network you have never seen before.</p>
+        </figcaption>
+        <span class="mt-5 font-mono text-[.65rem] uppercase tracking-[.16em] text-cyan">Discovery</span>
+      </figure>
+
+      <figure class="glass glass-hover reveal p-7 flex flex-col">
+        <span class="grid place-items-center h-11 w-11 rounded-xl bg-cyan/12 border border-cyan/25 text-cyan">
+          <!-- Mountain icon. -->
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 20 6.5-11 3.5 6 2.5-4L21 20Z" />
+            <path d="m9.5 9 1.6 2.7" />
+          </svg>
+        </span>
+        <figcaption class="mt-5 flex-1">
+          <h3 class="font-display font-semibold text-white">Hiking</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mute">Plan the route, check the weather, carry what you actually need, and keep going when the last hour is the hard one. Long problems get solved the same way as long climbs.</p>
+        </figcaption>
+        <span class="mt-5 font-mono text-[.65rem] uppercase tracking-[.16em] text-cyan">Patience</span>
+      </figure>
+
+    </div>
+
+    <!--
+      ======================================================================
+      OPTIONAL PHOTO STRIP
+      To use it:
+        1. Put three landscape photos in assets/img/ alongside profile.jpg.
+        2. Resize them to about 1200px wide and save as .webp or .jpg at
+           roughly 150KB each.
+        3. Replace the file names and the alt text below.
+        4. Delete this comment wrapper so the markup goes live.
+
+      loading="lazy" tells the browser not to download the images until the
+      visitor scrolls near them, which keeps the page fast for a recruiter
+      who never reaches this far.
+
+      <div class="mt-8 grid sm:grid-cols-3 gap-4 max-w-3xl">
+        <figure class="glass glass-hover reveal overflow-hidden">
+          <img src="assets/img/hike-01.jpg" alt="Ridge path in the Wicklow Mountains on a clear morning"
+               class="w-full h-44 object-cover" loading="lazy" width="1200" height="800" />
+          <figcaption class="px-4 py-3 font-mono text-[.65rem] uppercase tracking-[.14em] text-mute">Wicklow, Ireland</figcaption>
+        </figure>
+        <figure class="glass glass-hover reveal overflow-hidden">
+          <img src="assets/img/hike-02.jpg" alt="Short description of the second photo"
+               class="w-full h-44 object-cover" loading="lazy" width="1200" height="800" />
+          <figcaption class="px-4 py-3 font-mono text-[.65rem] uppercase tracking-[.14em] text-mute">Location</figcaption>
+        </figure>
+        <figure class="glass glass-hover reveal overflow-hidden">
+          <img src="assets/img/hike-03.jpg" alt="Short description of the third photo"
+               class="w-full h-44 object-cover" loading="lazy" width="1200" height="800" />
+          <figcaption class="px-4 py-3 font-mono text-[.65rem] uppercase tracking-[.14em] text-mute">Location</figcaption>
+        </figure>
+      </div>
+      ======================================================================
+    -->
+
+  </section>
+
+  <div class="mx-auto max-w-shell px-5 sm:px-8"><div class="rule"></div></div>
+
+  <!-- ========================================================================
+       CONTACT
+       Direct contact details on the left, message form on the right.
+       The form has no server behind it: script.js validates the input and
+       opens the visitor's own mail client with the message prefilled.
+       ======================================================================== -->
+  <section id="contact" class="mx-auto max-w-shell px-5 sm:px-8 py-20 sm:py-28 scroll-mt-28">
+    <div class="grid lg:grid-cols-[.9fr_1.1fr] gap-10">
+
+      <!-- Left column: the direct routes. -->
+      <div class="reveal">
+        <p class="eyebrow">/access-terminal</p>
+        <h2 class="mt-4 font-display font-bold tracking-tight text-3xl sm:text-[2.6rem] leading-[1.1] text-white">Let us talk.</h2>
+        <p class="mt-5 text-slate-300/90 leading-relaxed max-w-md">
+          I am looking for part time IT support, help desk or infrastructure work that fits around a full time job and a degree, evenings and weekends included. If that is what you are hiring for, send a message.
+        </p>
+
+        <div class="mt-9 space-y-3">
+
+          <!-- mailto opens the visitor's mail app with the address filled in. -->
+          <a href="mailto:michalszaroma@gmail.com" class="glass glass-hover flex items-center gap-4 px-5 py-4 group">
+            <span class="grid place-items-center h-10 w-10 rounded-lg bg-beam/12 border border-beam/25 text-beam shrink-0">
+              <!-- Envelope icon. -->
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m2 7 10 6 10-6" />
+              </svg>
+            </span>
+            <!-- min-w-0 plus truncate stops a long address breaking the layout
+                 on a narrow phone. -->
+            <span class="min-w-0">
+              <span class="block font-mono text-[.65rem] uppercase tracking-[.16em] text-mute">Email</span>
+              <span class="block text-sm text-slate-100 truncate">michalszaroma@gmail.com</span>
+            </span>
+          </a>
+
+          <!-- tel: in full international format so it dials correctly from
+               anywhere, not just from an Irish handset. -->
+          <a href="tel:+353830488321" class="glass glass-hover flex items-center gap-4 px-5 py-4">
+            <span class="grid place-items-center h-10 w-10 rounded-lg bg-cyan/12 border border-cyan/25 text-cyan shrink-0">
+              <!-- Phone handset icon. -->
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" />
+              </svg>
+            </span>
+            <span>
+              <span class="block font-mono text-[.65rem] uppercase tracking-[.16em] text-mute">Phone</span>
+              <span class="block text-sm text-slate-100">083 048 8321</span>
+            </span>
+          </a>
+
+          <!-- Profile links, side by side. -->
+          <div class="grid grid-cols-2 gap-3">
+            <a href="https://github.com/michalszaroma-ui" target="_blank" rel="noopener noreferrer" class="glass glass-hover flex items-center gap-3 px-5 py-4">
+              <svg viewBox="0 0 24 24" class="h-5 w-5 text-slate-200 shrink-0" fill="currentColor" aria-hidden="true"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2.2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.06-.72.08-.7.08-.7 1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.4.97.1-.76.4-1.28.74-1.57-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5Z" /></svg>
+              <span class="text-sm text-slate-100">GitHub</span>
+            </a>
+            <a href="https://www.linkedin.com/in/michalszaroma/" target="_blank" rel="noopener noreferrer" class="glass glass-hover flex items-center gap-3 px-5 py-4">
+              <svg viewBox="0 0 24 24" class="h-5 w-5 text-slate-200 shrink-0" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.75V21h-4v-5.6c0-1.34-.03-3.07-1.9-3.07-1.9 0-2.2 1.46-2.2 2.97V21H9z" /></svg>
+              <span class="text-sm text-slate-100">LinkedIn</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right column: the message form, styled as a terminal window. -->
+      <div class="glass reveal p-7 sm:p-9">
+
+        <!-- Window chrome: three dots and a title bar. -->
+        <div class="flex items-center gap-3 pb-5 border-b border-beam/15">
+          <span class="flex gap-1.5" aria-hidden="true">
+            <span class="h-2.5 w-2.5 rounded-full bg-beam/60"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-cyan/60"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-slate-600"></span>
+          </span>
+          <span class="font-mono text-xs text-mute">handshake :: new message</span>
+        </div>
+
+        <!-- novalidate turns off the browser's own error bubbles so the
+             custom messages in script.js are the only ones shown. The
+             required attributes stay for screen readers and for the fallback
+             if JavaScript fails to load. -->
+        <form id="contactForm" class="mt-7 space-y-5" novalidate>
+
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <!-- Every input has a real label bound by for and id. Placeholder
+                   text is not a substitute: it disappears as soon as typing
+                   starts, and screen readers treat it inconsistently. -->
+              <label for="name" class="block font-mono text-[.65rem] uppercase tracking-[.16em] text-mute mb-2">Your name</label>
+              <input id="name" name="name" type="text" required autocomplete="name"
+                     class="field-input w-full px-4 py-3 text-sm" placeholder="Jane Doe" />
+            </div>
+            <div>
+              <!-- type="email" brings up the right keyboard on mobile. -->
+              <label for="email" class="block font-mono text-[.65rem] uppercase tracking-[.16em] text-mute mb-2">Email</label>
+              <input id="email" name="email" type="email" required autocomplete="email"
+                     class="field-input w-full px-4 py-3 text-sm" placeholder="jane@company.ie" />
+            </div>
+          </div>
+
+          <div>
+            <label for="company" class="block font-mono text-[.65rem] uppercase tracking-[.16em] text-mute mb-2">
+              Company <span class="normal-case tracking-normal">(optional)</span>
+            </label>
+            <input id="company" name="company" type="text" autocomplete="organization"
+                   class="field-input w-full px-4 py-3 text-sm" placeholder="Where you are hiring for" />
+          </div>
+
+          <div>
+            <label for="message" class="block font-mono text-[.65rem] uppercase tracking-[.16em] text-mute mb-2">Message</label>
+            <textarea id="message" name="message" rows="5" required
+                      class="field-input w-full px-4 py-3 text-sm resize-y"
+                      placeholder="Role, hours, and what you need covered."></textarea>
+          </div>
+
+          <!-- role="alert" makes screen readers announce validation errors
+               the moment they appear, without the user having to find them. -->
+          <p id="formError" class="hidden text-sm text-rose-300" role="alert"></p>
+
+          <button type="submit" class="btn-solid w-full inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-[.95rem]">
+            Send message
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
+          </button>
+
+          <!-- Says plainly what the button does, so nobody wonders whether
+               their message vanished. -->
+          <p class="text-xs text-mute text-center">This opens your own mail app with the message ready to send.</p>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ==========================================================================
+     FOOTER
+     ========================================================================== -->
+<footer class="relative z-10 border-t border-beam/12 mt-8">
+  <div class="mx-auto max-w-shell px-5 sm:px-8 py-9 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <!-- The year is filled in by script.js so this never needs editing. -->
+    <p class="font-mono text-xs text-mute">&copy; <span id="year">2026</span> Michal Szaroma, Saggart, Co. Dublin</p>
+    <div class="flex items-center gap-6 font-mono text-xs text-mute">
+      <a href="#about" class="hover:text-white transition-colors">/about</a>
+      <a href="#labs" class="hover:text-white transition-colors">/architecture-labs</a>
+      <a href="#background" class="hover:text-white transition-colors">/background</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Loaded at the end of the body so the DOM already exists when it runs.
+     No defer needed at this position. -->
+<script src="assets/js/script.js"></script>
+
+</body>
+</html>
