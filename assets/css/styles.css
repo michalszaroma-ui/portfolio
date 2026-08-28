@@ -1,76 +1,31 @@
-/* ==========================================================================
-   styles.css
-   Custom styles for the Michal Szaroma portfolio.
-
-   Tailwind (loaded from the CDN in index.html) handles spacing, sizing and
-   layout. This file handles everything Tailwind cannot express cleanly:
-   the ambient background, the glass panels, the gradients, the animations
-   and the form controls.
-
-   Contents:
-     1.  Custom properties (the colour tokens)
-     2.  Base document styles
-     3.  Ambient background field
-     4.  Glass panel surface
-     5.  Dividers and section labels
-     6.  Gradient text
-     7.  Buttons
-     8.  Focus states (accessibility)
-     9.  Navigation links
-     10. Hero node graphic animation
-     11. Timeline animation
-     12. Scroll reveal
-     13. Tags and pills
-     14. Form controls
-     15. Reduced motion override
-   ========================================================================== */
-
-
-/* --------------------------------------------------------------------------
-   1. CUSTOM PROPERTIES
-   The two accent colours are declared once here so a single edit changes
-   every gradient, glow and border on the page.
-   -------------------------------------------------------------------------- */
+/* Colour tokens */
 :root {
-  --beam: #3b82f6;  /* electric blue: primary accent */
-  --cyan: #06b6d4;  /* cyber cyan: secondary accent */
-  --void: #020617;  /* deep slate: page background */
+  --beam: #3b82f6;
+  --cyan: #06b6d4;
+  --void: #020617;
 }
 
-
-/* --------------------------------------------------------------------------
-   2. BASE DOCUMENT STYLES
-   -------------------------------------------------------------------------- */
-
-/* Stop iOS Safari from inflating text sizes when the phone is rotated. */
+/* Base */
 html {
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   background-color: var(--void);
-  color: #e6edf9;                      /* near white with a cool tint */
+  color: #e6edf9;
   font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased; /* thinner, cleaner type on macOS */
-  overflow-x: hidden;                  /* the blurred pools sit outside the
-                                          viewport, so kill sideways scroll */
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-
-/* --------------------------------------------------------------------------
-   3. AMBIENT BACKGROUND FIELD
-   A fixed layer behind all content: a faint blue grid plus two large,
-   slowly drifting pools of coloured light.
-   -------------------------------------------------------------------------- */
-
+/* Background field */
 .field {
-  position: fixed;      /* stays put while the page scrolls */
-  inset: 0;             /* shorthand for top/right/bottom/left: 0 */
-  z-index: 0;           /* behind main content, which sits at z-index 10 */
-  pointer-events: none; /* never intercepts clicks */
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* The grid itself, drawn with two repeating linear gradients. */
 .field::before {
   content: '';
   position: absolute;
@@ -78,23 +33,19 @@ body {
   background-image:
     linear-gradient(to right,  rgba(59, 130, 246, .055) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(59, 130, 246, .055) 1px, transparent 1px);
-  background-size: 64px 64px; /* one grid cell */
+  background-size: 64px 64px;
 
-  /* Fade the grid out towards the bottom so it does not compete with text.
-     The -webkit- prefix is still needed for Safari. */
   mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 35%, transparent 78%);
   -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 35%, transparent 78%);
 }
 
-/* Shared settings for both light pools. */
 .pool {
   position: absolute;
-  border-radius: 9999px; /* a perfect circle */
-  filter: blur(90px);    /* the blur is what turns it into ambient light */
+  border-radius: 9999px;
+  filter: blur(90px);
   opacity: .5;
 }
 
-/* Blue pool, top right. */
 .pool-a {
   top: -14rem;
   right: -10rem;
@@ -104,7 +55,6 @@ body {
   animation: drift 26s ease-in-out infinite alternate;
 }
 
-/* Cyan pool, middle left. Runs in reverse so the two never sync up. */
 .pool-b {
   top: 46%;
   left: -14rem;
@@ -114,25 +64,16 @@ body {
   animation: drift 34s ease-in-out infinite alternate-reverse;
 }
 
-/* Slow movement and scaling. translate3d forces GPU compositing, which
-   keeps a 90px blur from stuttering. */
 @keyframes drift {
   from { transform: translate3d(0, 0, 0) scale(1); }
   to   { transform: translate3d(-3rem, 3.5rem, 0) scale(1.12); }
 }
 
-
-/* --------------------------------------------------------------------------
-   4. GLASS PANEL SURFACE
-   Every raised card, the nav bar and the contact form use .glass.
-   Add .glass-hover for the lift and glow on hover.
-   -------------------------------------------------------------------------- */
-
+/* Glass panels */
 .glass {
   background: linear-gradient(160deg, rgba(15, 28, 54, .72), rgba(6, 13, 30, .55));
   border: 1px solid rgba(59, 130, 246, .16);
 
-  /* Blurs whatever sits behind the panel. This is the glassmorphism effect. */
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
@@ -140,32 +81,23 @@ body {
   transition: border-color .35s ease, box-shadow .35s ease, transform .35s ease;
 }
 
-/* :focus-within is included so keyboard users tabbing into a card see the
-   same highlight a mouse user gets on hover. */
 .glass-hover:hover,
 .glass-hover:focus-within {
   border-color: rgba(6, 182, 212, .45);
 
-  /* Two shadows: a tight cyan rim, then a wide soft bloom underneath. */
   box-shadow:
     0 0 0 1px rgba(6, 182, 212, .12),
     0 18px 50px -22px rgba(59, 130, 246, .55);
 
-  transform: translateY(-3px); /* the lift */
+  transform: translateY(-3px);
 }
 
-
-/* --------------------------------------------------------------------------
-   5. DIVIDERS AND SECTION LABELS
-   -------------------------------------------------------------------------- */
-
-/* A hairline rule that fades to nothing at both ends. */
+/* Dividers and labels */
 .rule {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(59, 130, 246, .35), transparent);
 }
 
-/* The small monospace label above each section heading, e.g. /about */
 .eyebrow {
   font-family: 'JetBrains Mono', monospace;
   font-size: .7rem;
@@ -174,13 +106,7 @@ body {
   color: #4d9dfa;
 }
 
-
-/* --------------------------------------------------------------------------
-   6. GRADIENT TEXT
-   Paints a gradient across the text itself. Works by clipping the
-   background to the glyph shapes and making the text colour transparent.
-   -------------------------------------------------------------------------- */
-
+/* Gradient text */
 .grad-text {
   background: linear-gradient(105deg, #ffffff 8%, #7cc4fb 48%, #22d3ee 96%);
   -webkit-background-clip: text;
@@ -188,16 +114,11 @@ body {
   color: transparent;
 }
 
-
-/* --------------------------------------------------------------------------
-   7. BUTTONS
-   -------------------------------------------------------------------------- */
-
-/* Primary action: filled gradient, dark text, bloom on hover. */
+/* Buttons */
 .btn-solid {
   position: relative;
   background: linear-gradient(100deg, var(--beam), var(--cyan));
-  color: #02101f;      /* dark text on a bright fill reads better than white */
+  color: #02101f;
   font-weight: 600;
   transition: box-shadow .3s ease, transform .3s ease, filter .3s ease;
 }
@@ -208,7 +129,6 @@ body {
   filter: brightness(1.06);
 }
 
-/* Secondary action: outline only, fills faintly on hover. */
 .btn-ghost {
   border: 1px solid rgba(59, 130, 246, .35);
   color: #cfe2ff;
@@ -221,14 +141,7 @@ body {
   transform: translateY(-2px);
 }
 
-
-/* --------------------------------------------------------------------------
-   8. FOCUS STATES
-   :focus-visible shows the ring for keyboard navigation but not for mouse
-   clicks. Never remove this: it is how keyboard and screen reader users
-   know where they are on the page.
-   -------------------------------------------------------------------------- */
-
+/* Focus states */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -239,15 +152,9 @@ summary:focus-visible {
   border-radius: .4rem;
 }
 
-
-/* --------------------------------------------------------------------------
-   9. NAVIGATION LINKS
-   Each nav link grows an underline on hover, and keeps it while its
-   section is the one on screen (set by the scrollspy in script.js).
-   -------------------------------------------------------------------------- */
-
+/* Navigation links */
 .nav-link {
-  position: relative; /* anchors the ::after underline */
+  position: relative;
 }
 
 .nav-link::after {
@@ -256,7 +163,7 @@ summary:focus-visible {
   left: 0;
   bottom: -.4rem;
   height: 1px;
-  width: 0;           /* starts collapsed, animates out to full width */
+  width: 0;
   background: linear-gradient(90deg, var(--beam), var(--cyan));
   transition: width .3s ease;
 }
@@ -270,14 +177,7 @@ summary:focus-visible {
   color: #eaf3ff;
 }
 
-
-/* --------------------------------------------------------------------------
-   10. HERO NODE GRAPHIC
-   Three concentric SVG rings rotating at different speeds and directions,
-   plus five nodes pulsing on a stagger.
-   -------------------------------------------------------------------------- */
-
-/* Rotate around the centre of the shape rather than the top left corner. */
+/* Hero graphic */
 .ring {
   transform-origin: 50% 50%;
 }
@@ -290,9 +190,6 @@ summary:focus-visible {
   to { transform: rotate(360deg); }
 }
 
-/* Nodes fade and swell. Animating the SVG r attribute is supported in
-   Chrome, Safari and Firefox; if it ever fails the opacity change alone
-   still reads as a pulse. */
 .pulse-node {
   animation: pulse-node 3.2s ease-in-out infinite;
 }
@@ -302,13 +199,7 @@ summary:focus-visible {
   50%      { opacity: 1;   r: 4.6; }
 }
 
-
-/* --------------------------------------------------------------------------
-   11. TIMELINE ANIMATION
-   A vertical gradient line down the career timeline, with a glowing dot
-   travelling down it like a packet moving through a link.
-   -------------------------------------------------------------------------- */
-
+/* Timeline */
 .spine {
   background: linear-gradient(180deg,
     rgba(59, 130, 246, .55),
@@ -320,9 +211,6 @@ summary:focus-visible {
   animation: fall 5.5s linear infinite;
 }
 
-/* --spine-h is measured and set by script.js so the dot always travels the
-   full height of the timeline, whatever the screen size. 420px is the
-   fallback if the script has not run yet. */
 @keyframes fall {
   0%   { transform: translateY(0); opacity: 0; }
   12%  { opacity: 1; }
@@ -330,13 +218,7 @@ summary:focus-visible {
   100% { transform: translateY(var(--spine-h, 420px)); opacity: 0; }
 }
 
-
-/* --------------------------------------------------------------------------
-   12. SCROLL REVEAL
-   Elements start invisible and slightly low. script.js adds .in when they
-   enter the viewport, which triggers this transition.
-   -------------------------------------------------------------------------- */
-
+/* Scroll reveal */
 .reveal {
   opacity: 0;
   transform: translateY(22px);
@@ -350,12 +232,7 @@ summary:focus-visible {
   transform: none;
 }
 
-
-/* --------------------------------------------------------------------------
-   13. TAGS AND PILLS
-   Small monospace chips used for skills and project metadata.
-   -------------------------------------------------------------------------- */
-
+/* Tags */
 .tag {
   font-family: 'JetBrains Mono', monospace;
   font-size: .7rem;
@@ -367,11 +244,7 @@ summary:focus-visible {
   padding: .28rem .7rem;
 }
 
-
-/* --------------------------------------------------------------------------
-   14. FORM CONTROLS
-   -------------------------------------------------------------------------- */
-
+/* Form controls */
 .field-input {
   background: rgba(2, 10, 26, .6);
   border: 1px solid rgba(59, 130, 246, .2);
@@ -380,27 +253,17 @@ summary:focus-visible {
   transition: border-color .25s ease, box-shadow .25s ease;
 }
 
-/* Placeholder text is dimmed, but still passes contrast against the field. */
 .field-input::placeholder {
   color: #5d739a;
 }
 
-/* The default browser outline is replaced with a cyan ring that matches
-   the rest of the page. The ring is thick enough to stay visible. */
 .field-input:focus {
   border-color: rgba(6, 182, 212, .6);
   box-shadow: 0 0 0 3px rgba(6, 182, 212, .12);
   outline: none;
 }
 
-
-/* --------------------------------------------------------------------------
-   15. REDUCED MOTION OVERRIDE
-   Respects the operating system setting for people who get motion sickness
-   or migraines from animation. Everything still works, it just arrives
-   instantly instead of sliding in.
-   -------------------------------------------------------------------------- */
-
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

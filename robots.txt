@@ -2,5 +2,5 @@
 User-agent: *
 Allow: /
 
-# Replace the placeholder below with your real address once published.
-Sitemap: https://REPLACE-WITH-YOUR-URL/sitemap.xml
+
+Sitemap: https://michalszaroma-ui.github.io/portfolio/
