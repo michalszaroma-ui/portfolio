@@ -1,8 +1,4 @@
-<!--
-  Scalable favicon: the same MS monogram as the site header.
-  SVG icons stay crisp at every size and adapt to browser dark mode.
-  PNG fallbacks sit alongside for older browsers and iOS.
--->
+
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
