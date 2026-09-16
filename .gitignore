@@ -1,0 +1,16 @@
+# Operating system clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
+
+# Dependency folders, if this ever grows a build step
+node_modules/
+
+# Local environment files. Never commit secrets.
+.env
+.env.local
